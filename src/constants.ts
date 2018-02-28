@@ -1,0 +1,9 @@
+export const RepeatWrapping = 1000;
+export const ClampToEdgeWrapping = 1001;
+export const MirroredRepeatWrapping = 1002;
+export const NearestFilter = 1003;
+export const NearestMipMapNearestFilter = 1004;
+export const NearestMipMapLinearFilter = 1005;
+export const LinearFilter = 1006;
+export const LinearMipMapNearestFilter = 1007;
+export const LinearMipMapLinearFilter = 1008;
