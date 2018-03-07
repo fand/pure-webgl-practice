@@ -1,4 +1,5 @@
 import { ClampToEdgeWrapping, NearestFilter, LinearFilter } from './constants';
+import Slot from './slot';
 
 declare const require: any;
 const isVideo = require('is-video');
@@ -45,7 +46,7 @@ export default class TextureLoader {
     private canvas = document.createElement('canvas');
     private ctx = this.canvas.getContext('2d')!;
 
-    constructor(private gl: WebGLRenderingContext) {
+    constructor(private gl: WebGLRenderingContext, private slot: Slot) {
         this.maxTextures = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
     }
 
@@ -63,22 +64,19 @@ export default class TextureLoader {
             throw new Error('Failed to run gl.createTexture');
         }
 
-        let id = 0;
-        while (this.isTextureLoaded[id]) {
-            id++;
-        }
+        const slot = this.slot.getNewSlot();
 
         const img = new Image();
         img.src = url;
-        this.isTextureLoaded[id] = true;
+        this.isTextureLoaded[slot] = true;
 
         return new Promise(resolve => {
             img.onload = () => {
-                const t = new ImageTexture(name, texture, id, img);
-                this.textures[id] = t;
+                const t = new ImageTexture(name, texture, slot, img);
+                this.textures[slot] = t;
 
                 this.bindTexture(texture, img);
-                this.isTextureUpdated[id] = true;
+                this.isTextureUpdated[slot] = true;
                 resolve(t);
             };
         });
@@ -94,10 +92,7 @@ export default class TextureLoader {
             return Promise.resolve(cached);
         }
 
-        let id = 0;
-        while (this.isTextureLoaded[id]) {
-            id++;
-        }
+        const slot = this.slot.getNewSlot();
 
         const video = document.createElement('video');
         video.src = url;
@@ -113,18 +108,18 @@ export default class TextureLoader {
 
         document.body.appendChild(video);
 
-        this.isTextureLoaded[id] = true;
+        this.isTextureLoaded[slot] = true;
 
         return new Promise(resolve => {
             video.addEventListener('canplaythrough', () => {
                 video.play();
-                const t = new VideoTexture(name, texture, id, video);
-                this.textures[id] = t;
+                const t = new VideoTexture(name, texture, slot, video);
+                this.textures[slot] = t;
 
                 this.bindTexture(texture, video);
 
-                this.isTextureUpdated[id] = true;
-                this.isTextureVideo[id] = true;
+                this.isTextureUpdated[slot] = true;
+                this.isTextureVideo[slot] = true;
                 resolve(t);
             });
         });
@@ -183,6 +178,7 @@ export default class TextureLoader {
                     t.data.remove();
                 }
                 this.textures[t.id] = null;
+                this.slot.freeSlot(t.id);
             }
         });
     }

@@ -16,6 +16,10 @@ const shaders: { [id: string]: IShaders } = {
         vs: require('./shaders/shader1.vert'),
         fs: require('./shaders/mouse.frag'),
     },
+    backbuffer: {
+        vs: require('./shaders/shader1.vert'),
+        fs: require('./shaders/backbuffer.frag'),
+    },
     image: {
         vs: require('./shaders/shader1.vert'),
         fs: require('./shaders/image.frag'),

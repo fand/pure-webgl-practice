@@ -1,5 +1,7 @@
 import { mat4 as M } from 'gl-matrix';
+import Slot from './slot';
 import TextureLoader from './texture';
+import Target from './target';
 
 declare const require: any;
 const DEFAULT_SHADER = {
@@ -14,7 +16,9 @@ export default class GL {
     resizeObserver: any;
     gl: WebGLRenderingContext;
 
+    slot: Slot;
     textureLoader: TextureLoader;
+    backbuffer: Target;
 
     isPlaying = false;
     isLoading = false;
@@ -32,7 +36,14 @@ export default class GL {
 
         this.gl = this.canvas.getContext('webgl2') as WebGLRenderingContext;
 
-        this.textureLoader = new TextureLoader(this.gl);
+        this.slot = new Slot(this.gl);
+        this.textureLoader = new TextureLoader(this.gl, this.slot);
+        this.backbuffer = new Target(
+            this.gl,
+            this.slot,
+            this.canvas.offsetWidth,
+            this.canvas.offsetHeight,
+        );
 
         // Clear canvas
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -208,6 +219,12 @@ export default class GL {
         this.textureLoader.getUpdatedTextures().forEach(t => {
             this.setUniform(t.name, 't', t);
         });
+
+        this.backbuffer.update();
+        const location = this.gl.getUniformLocation(this.program, 'backbuffer');
+        this.gl.activeTexture(this.gl.TEXTURE0 + this.backbuffer.slot);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, this.backbuffer.textures[1]);
+        this.gl.uniform1i(location, this.backbuffer.slot);
     }
 
     render = () => {
@@ -221,10 +238,18 @@ export default class GL {
             return;
         }
 
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-
         this.updateUniforms();
 
+        this.gl.bindFramebuffer(
+            this.gl.FRAMEBUFFER,
+            this.backbuffer.framebuffer,
+        );
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+        this.gl.drawArrays(this.gl.TRIANGLES, 0, 3);
+        this.gl.drawArrays(this.gl.TRIANGLES, 3, 3);
+        this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
+
+        this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
         this.gl.drawArrays(this.gl.TRIANGLES, 0, 3);
         this.gl.drawArrays(this.gl.TRIANGLES, 3, 3);
         this.gl.flush();
@@ -272,6 +297,10 @@ export default class GL {
         this.canvas.width = this.canvas.offsetWidth;
         this.canvas.height = this.canvas.offsetHeight;
         this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+        this.backbuffer.resize(
+            this.canvas.offsetWidth,
+            this.canvas.offsetHeight,
+        );
         this.mvpMatrix = this.createMvpMatrix();
     };
 }
