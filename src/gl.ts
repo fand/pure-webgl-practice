@@ -2,6 +2,7 @@ import { mat4 as M } from 'gl-matrix';
 import Slot from './slot';
 import TextureLoader from './texture';
 import Target from './target';
+import AudioLoader from './audio-loader';
 
 declare const require: any;
 const DEFAULT_SHADER = {
@@ -19,6 +20,8 @@ export default class GL {
     slot: Slot;
     textureLoader: TextureLoader;
     backbuffer: Target;
+
+    audioLoader: AudioLoader;
 
     isPlaying = false;
     isLoading = false;
@@ -44,6 +47,8 @@ export default class GL {
             this.canvas.offsetWidth,
             this.canvas.offsetHeight,
         );
+
+        this.audioLoader = new AudioLoader(this.gl, this.slot, {});
 
         // Clear canvas
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -220,6 +225,8 @@ export default class GL {
             this.setUniform(t.name, 't', t);
         });
 
+        this.audioLoader.update(this.program);
+
         this.backbuffer.update();
         const location = this.gl.getUniformLocation(this.program, 'backbuffer');
         this.gl.activeTexture(this.gl.TEXTURE0 + this.backbuffer.slot);
@@ -291,6 +298,10 @@ export default class GL {
         M.mul(mvpMatrix, modelMatrix, mvpMatrix);
 
         return mvpMatrix;
+    }
+
+    toggleAudio(enable: boolean): void {
+        enable ? this.audioLoader.enable() : this.audioLoader.disable();
     }
 
     resize = () => {

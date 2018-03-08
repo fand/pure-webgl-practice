@@ -36,6 +36,10 @@ const shaders: { [id: string]: IShaders } = {
             video3: './videos/3.mp4',
         },
     },
+    audio: {
+        vs: require('./shaders/shader1.vert'),
+        fs: require('./shaders/audio.frag'),
+    },
 };
 
 let imports: string[] = [];
@@ -73,6 +77,7 @@ window.addEventListener('load', () => {
     });
 
     gl.start();
+    gl.toggleAudio(true);
 
     main.addEventListener(
         'click',
