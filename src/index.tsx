@@ -74,9 +74,7 @@ const loadShader = async (gl: GL, name: string) => {
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './app';
-
-// const App = () => <div>hello</div>;
+import App from './components/app';
 
 ReactDOM.render(<App />, document.querySelector('#app'));
 
