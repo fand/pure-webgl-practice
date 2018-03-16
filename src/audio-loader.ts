@@ -15,7 +15,6 @@ export default class AudioLoader {
     samples: WebGLTexture;
     spectrum: WebGLTexture;
 
-    isPlaying: boolean = false;
     isEnabled: boolean = false;
 
     private ctx: AudioContext;

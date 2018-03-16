@@ -40,6 +40,10 @@ const shaders: { [id: string]: IShaders } = {
         vs: require('./shaders/shader1.vert'),
         fs: require('./shaders/audio.frag'),
     },
+    camera: {
+        vs: require('./shaders/shader1.vert'),
+        fs: require('./shaders/camera.frag'),
+    },
 };
 
 let imports: string[] = [];
@@ -78,6 +82,7 @@ window.addEventListener('load', () => {
 
     gl.start();
     gl.toggleAudio(true);
+    gl.toggleCamera(true);
 
     main.addEventListener(
         'click',

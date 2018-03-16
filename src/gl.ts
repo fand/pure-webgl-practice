@@ -3,6 +3,7 @@ import Slot from './slot';
 import TextureLoader from './texture';
 import Target from './target';
 import AudioLoader from './audio-loader';
+import CameraLoader from './camera-loader';
 
 declare const require: any;
 const DEFAULT_SHADER = {
@@ -22,6 +23,7 @@ export default class GL {
     backbuffer: Target;
 
     audioLoader: AudioLoader;
+    cameraLoader: CameraLoader;
 
     isPlaying = false;
     isLoading = false;
@@ -49,6 +51,7 @@ export default class GL {
         );
 
         this.audioLoader = new AudioLoader(this.gl, this.slot, {});
+        this.cameraLoader = new CameraLoader(this.gl, this.slot);
 
         // Clear canvas
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -226,6 +229,7 @@ export default class GL {
         });
 
         this.audioLoader.update(this.program);
+        this.cameraLoader.update(this.program);
 
         this.backbuffer.update();
         const location = this.gl.getUniformLocation(this.program, 'backbuffer');
@@ -302,6 +306,10 @@ export default class GL {
 
     toggleAudio(enable: boolean): void {
         enable ? this.audioLoader.enable() : this.audioLoader.disable();
+    }
+
+    toggleCamera(enable: boolean): void {
+        enable ? this.cameraLoader.enable() : this.cameraLoader.disable();
     }
 
     resize = () => {
