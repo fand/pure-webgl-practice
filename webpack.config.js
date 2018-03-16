@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: path.resolve(__dirname, 'src/index.ts'),
+    entry: path.resolve(__dirname, 'src/index.tsx'),
     output: {
         path: path.resolve(__dirname, 'docs'),
         filename: 'bundle.js',
@@ -10,7 +10,7 @@ module.exports = {
         contentBase: path.join(__dirname, 'docs'),
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.json'],
     },
     module: {
         rules: [

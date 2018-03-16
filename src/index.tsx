@@ -72,20 +72,28 @@ const loadShader = async (gl: GL, name: string) => {
     });
 };
 
-window.addEventListener('load', () => {
-    const main = document.getElementById('main')!;
-    const gl = new GL(main);
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import App from './app';
 
-    Array.from(document.querySelectorAll('#menu li')).forEach((e: any) => {
-        e.addEventListener('click', () => loadShader(gl, e.innerText));
-    });
+// const App = () => <div>hello</div>;
 
-    gl.start();
-    gl.toggleAudio(true);
-    gl.toggleCamera(true);
+ReactDOM.render(<App />, document.querySelector('#app'));
 
-    main.addEventListener(
-        'click',
-        () => (gl.isPlaying ? gl.stop() : gl.start()),
-    );
-});
+// window.addEventListener('load', () => {
+//     const main = document.getElementById('main')!;
+//     const gl = new GL(main);
+//
+//     Array.from(document.querySelectorAll('#menu li')).forEach((e: any) => {
+//         e.addEventListener('click', () => loadShader(gl, e.innerText));
+//     });
+//
+//     gl.start();
+//     gl.toggleAudio(true);
+//     gl.toggleCamera(true);
+//
+//     main.addEventListener(
+//         'click',
+//         () => (gl.isPlaying ? gl.stop() : gl.start()),
+//     );
+// });

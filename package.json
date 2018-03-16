@@ -1,6 +1,12 @@
 {
   "devDependencies": {
     "@types/gl-matrix": "^2.4.0",
+    "@types/history": "^4.6.2",
+    "@types/react": "^16.0.40",
+    "@types/react-dom": "^16.0.4",
+    "@types/react-redux": "^5.0.15",
+    "@types/react-router-dom": "^4.2.5",
+    "@types/react-router-redux": "^5.0.12",
     "glslify-loader": "^1.0.2",
     "prettier": "^1.11.0",
     "raw-loader": "^0.5.1",
@@ -16,6 +22,15 @@
   },
   "dependencies": {
     "gl-matrix": "^2.4.0",
-    "is-video": "^1.0.1"
+    "history": "^4.7.2",
+    "is-video": "^1.0.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-router-redux": "^5.0.0-alpha.9",
+    "redux": "^3.7.2",
+    "styled-components": "^3.2.3"
   }
 }
