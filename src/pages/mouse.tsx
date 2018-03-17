@@ -2,9 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 const vs = require('../shaders/shader1.vert');
-const fs = require('../shaders/shader1.frag');
+const fs = require('../shaders/mouse.frag');
 
-class Home extends React.Component<any> {
+class Mouse extends React.Component<any> {
     componentDidMount() {
         const { veda } = this.props.app;
         veda.loadShader({ vs, fs });
@@ -18,4 +18,4 @@ class Home extends React.Component<any> {
     }
 }
 
-export default connect(s => s)(Home);
+export default connect(s => s)(Mouse);

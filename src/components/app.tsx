@@ -22,22 +22,17 @@ const store = createStore(
     applyMiddleware(middleware),
 );
 
-store.subscribe(() => {
-    console.log(store);
-});
-
-import Home from '../pages/home';
-
 import Sidebar from './sidebar';
 import Background from './background';
+import Main from './main';
 
 const App = () => (
     <Provider store={store}>
         <ConnectedRouter history={history}>
-            <div style={{ zIndex: 10000, background: '#FFF' }}>
+            <div>
                 <Sidebar />
                 <Background />
-                <Route exact path="/" component={Home} />
+                <Main />
             </div>
         </ConnectedRouter>
     </Provider>

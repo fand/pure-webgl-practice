@@ -269,12 +269,16 @@ export default class GL {
     };
 
     start(): void {
-        this.isPlaying = true;
-        requestAnimationFrame(this.render);
+        if (!this.isPlaying) {
+            this.isPlaying = true;
+            requestAnimationFrame(this.render);
+        }
     }
 
     stop(): void {
-        this.isPlaying = false;
+        if (this.isPlaying) {
+            this.isPlaying = false;
+        }
     }
 
     createMvpMatrix(): M {
