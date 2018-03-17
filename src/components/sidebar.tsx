@@ -9,10 +9,22 @@ const Nav = styled.nav`
     height: 100%;
     top: 0;
     left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+
+    li {
+        line-height: 1.8em;
+        list-style: none;
+    }
+    a,
+    a:active,
+    a:visited {
+        color: #0ff;
+    }
 `;
 
 export default () => (
-    <nav>
+    <Nav>
         <ul>
             <li>
                 <Link to="/">Home</Link>
@@ -36,5 +48,5 @@ export default () => (
                 <Link to="/camera">WebCam</Link>
             </li>
         </ul>
-    </nav>
+    </Nav>
 );

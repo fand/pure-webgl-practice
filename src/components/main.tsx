@@ -9,6 +9,17 @@ import Mouse from '../pages/mouse';
 import Audio from '../pages/audio';
 import Camera from '../pages/camera';
 
+import * as styledComponents from 'styled-components';
+const styled = styledComponents.default;
+
+const Div = styled.div`
+    position: fixed;
+    width: calc(100% - 240px);
+    height: 100%;
+    top: 0;
+    right: 0;
+`;
+
 class Main extends React.Component<any> {
     render() {
         if (!this.props.app.veda) {
@@ -16,7 +27,7 @@ class Main extends React.Component<any> {
         }
 
         return (
-            <div>
+            <Div>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/backbuffer" component={Backbuffer} />
                 <Route exact path="/image" component={Image} />
@@ -24,7 +35,7 @@ class Main extends React.Component<any> {
                 <Route exact path="/mouse" component={Mouse} />
                 <Route exact path="/audio" component={Audio} />
                 <Route exact path="/camera" component={Camera} />
-            </div>
+            </Div>
         );
     }
 }

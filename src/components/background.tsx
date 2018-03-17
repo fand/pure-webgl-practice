@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 const Div = styled.div`
     position: fixed;
-    width: calc(100% - 240px);
+    width: 100%;
     height: 100%;
     top: 0;
     right: 0;
@@ -16,10 +16,20 @@ const Div = styled.div`
 
 class Background extends React.Component<any, any> {
     el?: HTMLElement;
+    gl?: GL;
 
     componentDidMount() {
         const gl = new GL(this.el!);
         this.props.dispatch(initVeda(gl));
+
+        if (typeof window !== 'undefined') {
+            window.addEventListener('mousemove', (e: MouseEvent) => {
+                gl.setUniform('mouse', 'v2', {
+                    x: e.pageX / window.innerWidth,
+                    y: 1 - e.pageY / window.innerHeight,
+                });
+            });
+        }
     }
 
     setRef = (el: HTMLElement) => {
