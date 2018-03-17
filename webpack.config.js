@@ -23,6 +23,10 @@ module.exports = {
                 test: /\.(glsl|frag|vert)$/,
                 loader: 'glslify-loader',
             },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
+            },
         ],
     },
 };
